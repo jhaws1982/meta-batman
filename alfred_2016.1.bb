@@ -5,7 +5,7 @@ PRIORITY = "optional"
 LICENSE = "GPLv3"
 LIC_FILES_CHKSUM = "file://../COPYING;md5=d32239bcb673463ab874e80d47fae504"
 
-DEPENDS_${PN} += " kernel-module-batman-adv"
+DEPENDS += " batman-adv"
 RDEPENDS_${PN} += " kernel-module-batman-adv"
 S = "${WORKDIR}/git"
 
