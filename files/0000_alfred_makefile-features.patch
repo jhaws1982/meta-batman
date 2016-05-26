@@ -1,0 +1,14 @@
+--- a/Makefile
++++ b/Makefile
+@@ -28,7 +28,10 @@
+ LDLIBS += -lrt
+ 
+ # Turn on alfred capability dropping by default - set this to n if you don't want/need it
+-export CONFIG_ALFRED_CAPABILITIES=y
++export CONFIG_ALFRED_CAPABILITIES=n
++
++# Turn off alfred gpsd
++export CONFIG_ALFRED_GPSD=n
+ 
+ # disable verbose output
+ ifneq ($(findstring $(MAKEFLAGS),s),s)

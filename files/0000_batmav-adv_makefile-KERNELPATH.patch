@@ -1,0 +1,20 @@
+*** Makefile	2016-05-04 13:35:51.175397996 -0600
+--- Makefile	2016-05-04 13:30:28.519394180 -0600
+*************** export CONFIG_BATMAN_ADV_BATMAN_V=n
+*** 33,35 ****
+  PWD:=$(shell pwd)
+! KERNELPATH ?= /lib/modules/$(shell uname -r)/build
+  # sanity check: does KERNELPATH exist?
+--- 33,35 ----
+  PWD:=$(shell pwd)
+! KERNELPATH ?= $(KERNEL_SRC)
+  # sanity check: does KERNELPATH exist?
+*************** clean:
+*** 72,74 ****
+  
+! install: config
+  	$(MAKE) -C $(KERNELPATH) $(BUILD_FLAGS) modules_install
+--- 72,74 ----
+  
+! modules_install: config
+  	$(MAKE) -C $(KERNELPATH) $(BUILD_FLAGS) modules_install
