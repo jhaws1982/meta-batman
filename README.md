@@ -1,3 +1,56 @@
-# meta-batman
+This README file contains information on the contents of the
+batman layer.
 
-Yocto/OpenEmbedded bitbake recipes for batman-adv kernel module, batctl userspace control application, and alfred userspace data sharing daemon
+Please see the corresponding sections below for details.
+
+
+Dependencies
+============
+
+This layer depends on:
+
+  URI: git://git.openembedded.org/bitbake
+  branch: master
+
+  URI: git://git.openembedded.org/openembedded-core
+  layers: meta
+  branch: jethro
+
+  URI: git://git.yoctoproject.org/poky
+  layers: ----
+  branch: jethro
+
+
+Patches
+=======
+
+Please submit any patches against the batman layer to maintainer:
+
+Maintainer: Jonathan Haws <jhaws@sdl.usu.edu>
+
+
+Table of Contents
+=================
+
+  I. Adding the batman layer to your build
+
+
+I. Adding the batman layer to your build
+=================================================
+
+In order to use this layer, you need to make the build system aware of
+it.
+
+Assuming the batman layer exists at the top-level of your
+yocto build tree, you can add it to the build system by adding the
+location of the batman layer to bblayers.conf, along with any
+other layers needed. e.g.:
+
+  BBLAYERS ?= " \
+    /path/to/yocto/meta \
+    /path/to/yocto/meta-yocto \
+    /path/to/yocto/meta-yocto-bsp \
+    /path/to/yocto/meta-batman \
+    "
+
+
