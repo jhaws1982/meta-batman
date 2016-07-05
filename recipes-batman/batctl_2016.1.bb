@@ -5,8 +5,9 @@ PRIORITY = "optional"
 LICENSE = "GPLv3"
 LIC_FILES_CHKSUM = "file://../COPYING;md5=d32239bcb673463ab874e80d47fae504"
 
-DEPENDS += " batman-adv libnl"
-RDEPENDS_${PN} += " kernel-module-batman-adv"
+DEPENDS += " libnl"
+#DEPENDS += " batman-adv"
+#RDEPENDS_${PN} += " kernel-module-batman-adv"
 S = "${WORKDIR}/git"
 
 SRCREV = "7a3d563466f368b9b50191f441b775bae46a77ca"
