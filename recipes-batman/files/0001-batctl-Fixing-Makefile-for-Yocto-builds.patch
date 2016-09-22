@@ -1,0 +1,85 @@
+From 1f47f70259a09a83473fc329a35bb7d8097df7ec Mon Sep 17 00:00:00 2001
+From: Jonathan Haws <jhaws@sdl.usu.edu>
+Date: Thu, 22 Sep 2016 10:01:50 -0600
+Subject: [PATCH] batctl: Fixing Makefile for Yocto builds
+
+---
+ Makefile | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 0cec413..e79a79e 100755
+--- a/Makefile
++++ b/Makefile
+@@ -44,9 +44,9 @@ OBJ_BISECT = bisect_iv.o
+ MANPAGE = man/batctl.8
+ 
+ # batctl flags and options
+-CFLAGS += -Wall -W -std=gnu99 -fno-strict-aliasing -MD -MP
+-CPPFLAGS += -D_GNU_SOURCE
+-LDLIBS += -lm
++BC_CFLAGS += -Wall -W -std=gnu99 -fno-strict-aliasing -MD -MP
++BC_CPPFLAGS += -D_GNU_SOURCE
++BC_LDLIBS += -lm
+ 
+ # disable verbose output
+ ifneq ($(findstring $(MAKEFLAGS),s),s)
+@@ -73,8 +73,8 @@ ifeq ($(origin LIBNL_CFLAGS) $(origin LIBNL_LDLIBS), undefined undefined)
+   LIBNL_CFLAGS += $(shell $(PKG_CONFIG) --cflags $(LIBNL_NAME))
+   LIBNL_LDLIBS +=  $(shell $(PKG_CONFIG) --libs $(LIBNL_NAME))
+ endif
+-CFLAGS += $(LIBNL_CFLAGS)
+-LDLIBS += $(LIBNL_LDLIBS)
++BC_CFLAGS += $(LIBNL_CFLAGS)
++BC_LDLIBS += $(LIBNL_LDLIBS)
+ 
+ ifeq ($(origin LIBNL_GENL_CFLAGS) $(origin LIBNL_GENL_LDLIBS), undefined undefined)
+   LIBNL_GENL_NAME ?= libnl-genl-3.0
+@@ -84,21 +84,21 @@ ifeq ($(origin LIBNL_GENL_CFLAGS) $(origin LIBNL_GENL_LDLIBS), undefined undefin
+   LIBNL_GENL_CFLAGS += $(shell $(PKG_CONFIG) --cflags $(LIBNL_GENL_NAME))
+   LIBNL_GENL_LDLIBS += $(shell $(PKG_CONFIG) --libs $(LIBNL_GENL_NAME))
+ endif
+-CFLAGS += $(LIBNL_GENL_CFLAGS)
+-LDLIBS += $(LIBNL_GENL_LDLIBS)
++BC_CFLAGS += $(LIBNL_GENL_CFLAGS)
++BC_LDLIBS += $(LIBNL_GENL_LDLIBS)
+ 
+ # standard build tools
+ ifeq ($(CONFIG_BATCTL_BISECT),y)
+ OBJ += $(OBJ_BISECT)
+-CPPFLAGS += -DBATCTL_BISECT
++BC_CPPFLAGS += -DBATCTL_BISECT
+ endif
+ 
+ CC ?= gcc
+ RM ?= rm -f
+ INSTALL ?= install
+ MKDIR ?= mkdir -p
+-COMPILE.c = $(Q_CC)$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
+-LINK.o = $(Q_LD)$(CC) $(CFLAGS) $(LDFLAGS) $(TARGET_ARCH)
++COMPILE.c = $(Q_CC)$(CC) $(CFLAGS) $(BC_CFLAGS) $(CPPFLAGS) $(BC_CPPFLAGS) $(TARGET_ARCH) -c
++LINK.o = $(Q_LD)$(CC) $(CFLAGS) $(BC_CFLAGS) $(LDFLAGS) $(TARGET_ARCH)
+ 
+ # standard install paths
+ PREFIX = /usr/local
+@@ -110,7 +110,7 @@ REVISION= $(shell	if [ -d .git ]; then \
+ 				echo $$(git describe --always --dirty --match "v*" |sed 's/^v//' 2> /dev/null || echo "[unknown]"); \
+ 			fi)
+ ifneq ($(REVISION),)
+-CPPFLAGS += -DSOURCE_VERSION=\"$(REVISION)\"
++BC_CPPFLAGS += -DSOURCE_VERSION=\"$(REVISION)\"
+ endif
+ 
+ # default target
+@@ -122,7 +122,7 @@ all: $(BINARY_NAME)
+ 	$(COMPILE.c) -o $@ $<
+ 
+ $(BINARY_NAME): $(OBJ)
+-	$(LINK.o) $^ $(LDLIBS) -o $@
++	$(LINK.o) $^ $(LDLIBS) $(BC_LDLIBS) -o $@
+ 
+ clean:
+ 	$(RM) $(BINARY_NAME) $(OBJ) $(OBJ_BISECT) $(DEP)
+-- 
+1.9.1
+

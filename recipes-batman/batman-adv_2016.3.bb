@@ -8,13 +8,13 @@ inherit module
 RDEPENDS_${PN} = " kernel-module-libcrc32c kernel-module-bridge"
 S = "${WORKDIR}/git"
 
-SRCREV = "01a3aa4396e3dacdee29a1ce96057f51d02d4dd0"
+SRCREV = "061486b412dcb03e6adcaba661f245e7795e86a9"
 SRC_URI = "git://git.open-mesh.org/batman-adv.git \
            file://COPYING \
            file://0000_batmav-adv_makefile-KERNELPATH.patch;patchdir=${S};striplevel=0 \
           "
 
-PV = "2016.1_git${SRCREV}"
+PV = "2016.3_git${SRCREV}"
 
 # The inherit of module.bbclass will automatically name module packages with
 # "kernel-module-" prefix as required by the oe-core build environment.

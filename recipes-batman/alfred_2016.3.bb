@@ -5,18 +5,18 @@ PRIORITY = "optional"
 LICENSE = "GPLv3"
 LIC_FILES_CHKSUM = "file://../COPYING;md5=d32239bcb673463ab874e80d47fae504"
 
-#DEPENDS += " batman-adv"
-#RDEPENDS_${PN} += " kernel-module-batman-adv"
+DEPENDS += " libnl"
+RDEPENDS_${PN} += " batctl"
 S = "${WORKDIR}/git"
 
-SRCREV = "f6befe7d58f18ec7922db77e840027286b591697"
+SRCREV = "99a3945e9d560481968d1be5c43e19411290d05d"
 SRC_URI = "git://git.open-mesh.org/alfred.git \
            file://COPYING \
-           file://0000_alfred_makefile-features.patch \
+           file://0001-alfred-Fixing-Makefile-for-Yocto-builds.patch \
            file://alfred.sh \
           "
 
-PV = "2016.1_git${SRCREV}"
+PV = "2016.3_git${SRCREV}"
 
 do_compile() {
   oe_runmake
