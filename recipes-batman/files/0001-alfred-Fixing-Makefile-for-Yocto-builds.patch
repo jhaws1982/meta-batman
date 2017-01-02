@@ -1,24 +1,26 @@
-From fb6e45351ab17b8bcb8d5ff1b6c06c841dc8340a Mon Sep 17 00:00:00 2001
+From f8264b910a6ed8294c2c27f984c67bbfdb84aea5 Mon Sep 17 00:00:00 2001
 From: Jonathan Haws <jhaws@sdl.usu.edu>
-Date: Thu, 22 Sep 2016 11:08:28 -0600
-Subject: [PATCH] alfred: Fixing Makefile for Yocto builds
+Date: Sat, 31 Dec 2016 12:27:38 -0700
+Subject: [PATCH] Updating Makefiles for Yocto builds
 
 ---
- Makefile     | 31 +++++++++++++++++--------------
+ Makefile     | 33 ++++++++++++++++++---------------
  vis/Makefile | 20 ++++++++++----------
- 2 files changed, 27 insertions(+), 24 deletions(-)
+ 2 files changed, 28 insertions(+), 25 deletions(-)
 
 diff --git a/Makefile b/Makefile
-index 6daa904..c207429 100755
+index 552e690..2a46013 100755
 --- a/Makefile
 +++ b/Makefile
-@@ -35,11 +35,14 @@ OBJ += util.o
+@@ -35,12 +35,15 @@ OBJ += util.o
  MANPAGE = man/alfred.8
  
  # alfred flags and options
 -CFLAGS += -pedantic -Wall -W -std=gnu99 -fno-strict-aliasing -MD -MP
+-CPPFLAGS += -D_GNU_SOURCE
 -LDLIBS += -lrt
 +AL_CFLAGS += -pedantic -Wall -W -std=gnu99 -fno-strict-aliasing -MD -MP
++AL_CPPFLAGS += -D_GNU_SOURCE
 +AL_LDLIBS += -lrt
  
  # Turn on alfred capability dropping by default - set this to n if you don't want/need it
@@ -30,18 +32,18 @@ index 6daa904..c207429 100755
  
  # disable verbose output
  ifneq ($(findstring $(MAKEFLAGS),s),s)
-@@ -56,8 +59,8 @@ CC ?= gcc
+@@ -57,8 +60,8 @@ CC ?= gcc
  RM ?= rm -f
  INSTALL ?= install
  MKDIR ?= mkdir -p
 -COMPILE.c = $(Q_CC)$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
 -LINK.o = $(Q_LD)$(CC) $(CFLAGS) $(LDFLAGS) $(TARGET_ARCH)
-+COMPILE.c = $(Q_CC)$(CC) $(CFLAGS) $(AL_CFLAGS) $(CPPFLAGS) $(AL_CPPFLAGS) $(TARGET_ARCH) -c
-+LINK.o = $(Q_LD)$(CC) $(CFLAGS) $(AL_CFLAGS) $(LDFLAGS) $(TARGET_ARCH)
++COMPILE.c = $(Q_CC)$(CC) $(AL_CFLAGS) $(AL_CPPFLAGS) $(TARGET_ARCH) -c
++LINK.o = $(Q_LD)$(CC) $(AL_CFLAGS) $(LDFLAGS) $(TARGET_ARCH)
  
  # standard install paths
  PREFIX = /usr/local
-@@ -69,7 +72,7 @@ REVISION= $(shell	if [ -d .git ]; then \
+@@ -70,7 +73,7 @@ REVISION= $(shell	if [ -d .git ]; then \
  				echo $$(git describe --always --dirty --match "v*" |sed 's/^v//' 2> /dev/null || echo "[unknown]"); \
  			fi)
  ifneq ($(REVISION),)
@@ -50,7 +52,7 @@ index 6daa904..c207429 100755
  endif
  
  ifneq ($(CONFIG_ALFRED_VIS),n)
-@@ -99,8 +102,8 @@ ifeq ($(origin LIBNL_CFLAGS) $(origin LIBNL_LDLIBS), undefined undefined)
+@@ -100,8 +103,8 @@ ifeq ($(origin LIBNL_CFLAGS) $(origin LIBNL_LDLIBS), undefined undefined)
    LIBNL_CFLAGS += $(shell $(PKG_CONFIG) --cflags $(LIBNL_NAME))
    LIBNL_LDLIBS +=  $(shell $(PKG_CONFIG) --libs $(LIBNL_NAME))
  endif
@@ -61,7 +63,7 @@ index 6daa904..c207429 100755
  
  ifeq ($(origin LIBNL_GENL_CFLAGS) $(origin LIBNL_GENL_LDLIBS), undefined undefined)
    LIBNL_GENL_NAME ?= libnl-genl-3.0
-@@ -110,8 +113,8 @@ ifeq ($(origin LIBNL_GENL_CFLAGS) $(origin LIBNL_GENL_LDLIBS), undefined undefin
+@@ -111,8 +114,8 @@ ifeq ($(origin LIBNL_GENL_CFLAGS) $(origin LIBNL_GENL_LDLIBS), undefined undefin
    LIBNL_GENL_CFLAGS += $(shell $(PKG_CONFIG) --cflags $(LIBNL_GENL_NAME))
    LIBNL_GENL_LDLIBS += $(shell $(PKG_CONFIG) --libs $(LIBNL_GENL_NAME))
  endif
@@ -72,7 +74,7 @@ index 6daa904..c207429 100755
  
  ifneq ($(CONFIG_ALFRED_CAPABILITIES),n)
    ifeq ($(origin LIBCAP_CFLAGS) $(origin LIBCAP_LDLIBS), undefined undefined)
-@@ -122,9 +125,9 @@ ifneq ($(CONFIG_ALFRED_CAPABILITIES),n)
+@@ -123,9 +126,9 @@ ifneq ($(CONFIG_ALFRED_CAPABILITIES),n)
      LIBCAP_CFLAGS += $(shell $(PKG_CONFIG) --cflags $(LIBCAP_NAME))
      LIBCAP_LDLIBS +=  $(shell $(PKG_CONFIG) --libs $(LIBCAP_NAME))
    endif
@@ -85,7 +87,7 @@ index 6daa904..c207429 100755
  endif
  
  
-@@ -137,7 +140,7 @@ all: $(BINARY_NAME) $(VIS_ALL) $(GPSD_ALL)
+@@ -138,7 +141,7 @@ all: $(BINARY_NAME) $(VIS_ALL) $(GPSD_ALL)
  	$(COMPILE.c) -o $@ $<
  
  $(BINARY_NAME): $(OBJ)
@@ -95,41 +97,34 @@ index 6daa904..c207429 100755
  clean:	$(VIS_CLEAN) $(GPSD_CLEAN)
  	$(RM) $(BINARY_NAME) $(OBJ) $(DEP)
 diff --git a/vis/Makefile b/vis/Makefile
-index fd99f49..8083971 100755
+index 22483a5..aa95e84 100755
 --- a/vis/Makefile
 +++ b/vis/Makefile
-@@ -26,8 +26,8 @@ OBJ += vis.o
+@@ -26,9 +26,9 @@ OBJ += vis.o
  MANPAGE = man/batadv-vis.8
  
  # batadv-vis flags and options
 -CFLAGS += -pedantic -Wall -W -std=gnu99 -fno-strict-aliasing -MD -MP
+-CPPFLAGS += -D_GNU_SOURCE
 -LDLIBS += -lrt
 +VIS_CFLAGS += -pedantic -Wall -W -std=gnu99 -fno-strict-aliasing -MD -MP
++VIS_CPPFLAGS += -D_GNU_SOURCE
 +VIS_LDLIBS += -lrt
  
  # disable verbose output
  ifneq ($(findstring $(MAKEFLAGS),s),s)
-@@ -44,8 +44,8 @@ CC ?= gcc
+@@ -45,8 +45,8 @@ CC ?= gcc
  RM ?= rm -f
  INSTALL ?= install
  MKDIR ?= mkdir -p
 -COMPILE.c = $(Q_CC)$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
 -LINK.o = $(Q_LD)$(CC) $(CFLAGS) $(LDFLAGS) $(TARGET_ARCH)
-+COMPILE.c = $(Q_CC)$(CC) $(CFLAGS) $(VIS_CFLAGS) $(CPPFLAGS) $(VIS_CPPFLAGS) $(TARGET_ARCH) -c
-+LINK.o = $(Q_LD)$(CC) $(CFLAGS) $(VIS_CFLAGS) $(LDFLAGS) $(TARGET_ARCH)
++COMPILE.c = $(Q_CC)$(CC) $(VIS_CFLAGS) $(VIS_CPPFLAGS) $(TARGET_ARCH) -c
++LINK.o = $(Q_LD)$(CC) $(VIS_CFLAGS) $(LDFLAGS) $(TARGET_ARCH)
  
  # standard install paths
  PREFIX = /usr/local
-@@ -57,7 +57,7 @@ REVISION= $(shell	if [ -d ../.git ]; then \
- 				echo $$(git describe --always --dirty --match "v*" |sed 's/^v//' 2> /dev/null || echo "[unknown]"); \
- 			fi)
- ifneq ($(REVISION),)
--CPPFLAGS += -DSOURCE_VERSION=\"$(REVISION)\"
-+VIS_CPPFLAGS += -DSOURCE_VERSION=\"$(REVISION)\"
- endif
- 
- ifeq ($(origin PKG_CONFIG), undefined)
-@@ -75,8 +75,8 @@ ifeq ($(origin LIBNL_CFLAGS) $(origin LIBNL_LDLIBS), undefined undefined)
+@@ -76,8 +76,8 @@ ifeq ($(origin LIBNL_CFLAGS) $(origin LIBNL_LDLIBS), undefined undefined)
    LIBNL_CFLAGS += $(shell $(PKG_CONFIG) --cflags $(LIBNL_NAME))
    LIBNL_LDLIBS +=  $(shell $(PKG_CONFIG) --libs $(LIBNL_NAME))
  endif
@@ -140,7 +135,7 @@ index fd99f49..8083971 100755
  
  ifeq ($(origin LIBNL_GENL_CFLAGS) $(origin LIBNL_GENL_LDLIBS), undefined undefined)
    LIBNL_GENL_NAME ?= libnl-genl-3.0
-@@ -86,8 +86,8 @@ ifeq ($(origin LIBNL_GENL_CFLAGS) $(origin LIBNL_GENL_LDLIBS), undefined undefin
+@@ -87,8 +87,8 @@ ifeq ($(origin LIBNL_GENL_CFLAGS) $(origin LIBNL_GENL_LDLIBS), undefined undefin
    LIBNL_GENL_CFLAGS += $(shell $(PKG_CONFIG) --cflags $(LIBNL_GENL_NAME))
    LIBNL_GENL_LDLIBS += $(shell $(PKG_CONFIG) --libs $(LIBNL_GENL_NAME))
  endif
@@ -151,7 +146,7 @@ index fd99f49..8083971 100755
  
  # default target
  all: $(BINARY_NAME)
-@@ -98,7 +98,7 @@ all: $(BINARY_NAME)
+@@ -99,7 +99,7 @@ all: $(BINARY_NAME)
  	$(COMPILE.c) -o $@ $<
  
  $(BINARY_NAME): $(OBJ)

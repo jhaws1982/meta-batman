@@ -1,30 +1,30 @@
-From 1f47f70259a09a83473fc329a35bb7d8097df7ec Mon Sep 17 00:00:00 2001
+From 6941a2c6510b5b83192e54e10e1a9f4028b20c00 Mon Sep 17 00:00:00 2001
 From: Jonathan Haws <jhaws@sdl.usu.edu>
-Date: Thu, 22 Sep 2016 10:01:50 -0600
-Subject: [PATCH] batctl: Fixing Makefile for Yocto builds
+Date: Sat, 31 Dec 2016 12:30:21 -0700
+Subject: [PATCH] Updating Makefiles for Yocto builds
 
 ---
- Makefile | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ Makefile | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
 diff --git a/Makefile b/Makefile
-index 0cec413..e79a79e 100755
+index cfc9465..8b7034d 100755
 --- a/Makefile
 +++ b/Makefile
-@@ -44,9 +44,9 @@ OBJ_BISECT = bisect_iv.o
+@@ -45,9 +45,9 @@ OBJ_BISECT = bisect_iv.o
  MANPAGE = man/batctl.8
  
  # batctl flags and options
 -CFLAGS += -Wall -W -std=gnu99 -fno-strict-aliasing -MD -MP
 -CPPFLAGS += -D_GNU_SOURCE
--LDLIBS += -lm
+-LDLIBS += -lm -lrt
 +BC_CFLAGS += -Wall -W -std=gnu99 -fno-strict-aliasing -MD -MP
 +BC_CPPFLAGS += -D_GNU_SOURCE
-+BC_LDLIBS += -lm
++BC_LDLIBS += -lm -lrt
  
  # disable verbose output
  ifneq ($(findstring $(MAKEFLAGS),s),s)
-@@ -73,8 +73,8 @@ ifeq ($(origin LIBNL_CFLAGS) $(origin LIBNL_LDLIBS), undefined undefined)
+@@ -74,8 +74,8 @@ ifeq ($(origin LIBNL_CFLAGS) $(origin LIBNL_LDLIBS), undefined undefined)
    LIBNL_CFLAGS += $(shell $(PKG_CONFIG) --cflags $(LIBNL_NAME))
    LIBNL_LDLIBS +=  $(shell $(PKG_CONFIG) --libs $(LIBNL_NAME))
  endif
@@ -35,7 +35,7 @@ index 0cec413..e79a79e 100755
  
  ifeq ($(origin LIBNL_GENL_CFLAGS) $(origin LIBNL_GENL_LDLIBS), undefined undefined)
    LIBNL_GENL_NAME ?= libnl-genl-3.0
-@@ -84,21 +84,21 @@ ifeq ($(origin LIBNL_GENL_CFLAGS) $(origin LIBNL_GENL_LDLIBS), undefined undefin
+@@ -85,8 +85,8 @@ ifeq ($(origin LIBNL_GENL_CFLAGS) $(origin LIBNL_GENL_LDLIBS), undefined undefin
    LIBNL_GENL_CFLAGS += $(shell $(PKG_CONFIG) --cflags $(LIBNL_GENL_NAME))
    LIBNL_GENL_LDLIBS += $(shell $(PKG_CONFIG) --libs $(LIBNL_GENL_NAME))
  endif
@@ -46,23 +46,18 @@ index 0cec413..e79a79e 100755
  
  # standard build tools
  ifeq ($(CONFIG_BATCTL_BISECT),y)
- OBJ += $(OBJ_BISECT)
--CPPFLAGS += -DBATCTL_BISECT
-+BC_CPPFLAGS += -DBATCTL_BISECT
- endif
- 
- CC ?= gcc
+@@ -98,8 +98,8 @@ CC ?= gcc
  RM ?= rm -f
  INSTALL ?= install
  MKDIR ?= mkdir -p
 -COMPILE.c = $(Q_CC)$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
 -LINK.o = $(Q_LD)$(CC) $(CFLAGS) $(LDFLAGS) $(TARGET_ARCH)
-+COMPILE.c = $(Q_CC)$(CC) $(CFLAGS) $(BC_CFLAGS) $(CPPFLAGS) $(BC_CPPFLAGS) $(TARGET_ARCH) -c
-+LINK.o = $(Q_LD)$(CC) $(CFLAGS) $(BC_CFLAGS) $(LDFLAGS) $(TARGET_ARCH)
++COMPILE.c = $(Q_CC)$(CC) $(BC_CFLAGS) $(BC_CPPFLAGS) $(TARGET_ARCH) -c
++LINK.o = $(Q_LD)$(CC) $(BC_CFLAGS) $(LDFLAGS) $(TARGET_ARCH)
  
  # standard install paths
  PREFIX = /usr/local
-@@ -110,7 +110,7 @@ REVISION= $(shell	if [ -d .git ]; then \
+@@ -111,7 +111,7 @@ REVISION= $(shell	if [ -d .git ]; then \
  				echo $$(git describe --always --dirty --match "v*" |sed 's/^v//' 2> /dev/null || echo "[unknown]"); \
  			fi)
  ifneq ($(REVISION),)
@@ -71,7 +66,7 @@ index 0cec413..e79a79e 100755
  endif
  
  # default target
-@@ -122,7 +122,7 @@ all: $(BINARY_NAME)
+@@ -123,7 +123,7 @@ all: $(BINARY_NAME)
  	$(COMPILE.c) -o $@ $<
  
  $(BINARY_NAME): $(OBJ)

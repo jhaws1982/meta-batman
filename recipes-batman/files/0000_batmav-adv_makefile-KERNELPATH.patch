@@ -1,20 +1,36 @@
-*** Makefile	2016-05-04 13:35:51.175397996 -0600
---- Makefile	2016-05-04 13:30:28.519394180 -0600
-*************** export CONFIG_BATMAN_ADV_BATMAN_V=n
-*** 33,35 ****
-  PWD:=$(shell pwd)
-! KERNELPATH ?= /lib/modules/$(shell uname -r)/build
-  # sanity check: does KERNELPATH exist?
---- 33,35 ----
-  PWD:=$(shell pwd)
-! KERNELPATH ?= $(KERNEL_SRC)
-  # sanity check: does KERNELPATH exist?
-*************** clean:
-*** 72,74 ****
-  
-! install: config
-  	$(MAKE) -C $(KERNELPATH) $(BUILD_FLAGS) modules_install
---- 72,74 ----
-  
-! modules_install: config
-  	$(MAKE) -C $(KERNELPATH) $(BUILD_FLAGS) modules_install
+From abd3fd84b1dbdcfab2aaa0db87de502badd4d2a2 Mon Sep 17 00:00:00 2001
+From: Jonathan Haws <jhaws@sdl.usu.edu>
+Date: Sat, 31 Dec 2016 13:55:50 -0700
+Subject: [PATCH] Updating Makefile to support Yocto builds
+
+---
+ Makefile | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index b852a17..dede6dc 100644
+--- a/Makefile
++++ b/Makefile
+@@ -34,7 +34,7 @@ export CONFIG_BATMAN_ADV_BATMAN_V=n
+ 
+ PWD:=$(shell pwd)
+ BUILD_DIR=$(PWD)/build
+-KERNELPATH ?= /lib/modules/$(shell uname -r)/build
++KERNELPATH ?= $(KERNEL_SRC)
+ # sanity check: does KERNELPATH exist?
+ ifeq ($(shell cd $(KERNELPATH) && pwd),)
+ $(warning $(KERNELPATH) is missing, please set KERNELPATH)
+@@ -93,8 +93,9 @@ clean:
+ 	$(RM) compat-autoconf.h*
+ 	$(RM) -r $(BUILD_DIR)
+ 
+-install: config $(SOURCE_STAMP)
++modules_install: config $(SOURCE_STAMP)
+ 	$(MAKE) -C $(KERNELPATH) $(BUILD_FLAGS) modules_install
++	ln -svf $(shell pwd)/build/Module.symvers .
+ 	depmod -a
+ 
+ config:
+-- 
+1.9.1
+

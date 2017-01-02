@@ -8,13 +8,13 @@ LIC_FILES_CHKSUM = "file://../COPYING;md5=d32239bcb673463ab874e80d47fae504"
 DEPENDS += " libnl"
 S = "${WORKDIR}/git"
 
-SRCREV = "c821115dc2d04d3f154318d7af677ae700124e33"
+SRCREV = "527daf0aa31b59f813b3460864204e4af09fa1e5"
 SRC_URI = "git://git.open-mesh.org/batctl.git \
            file://COPYING \
            file://0001-batctl-Fixing-Makefile-for-Yocto-builds.patch \
           "
 
-PV = "2016.3_git${SRCREV}"
+PV = "_git${SRCREV}"
 
 do_compile() {
   oe_runmake
