@@ -9,7 +9,7 @@ DEPENDS += " libnl"
 RDEPENDS_${PN} += " batctl"
 S = "${WORKDIR}/git"
 
-SRCREV = "99321393c1118a4fc61e34aa7ba82f940bac19c8"
+SRCREV = "c7da798113a2a978cf4d45b4aa572d5a6ce17138"
 SRC_URI = "git://git.open-mesh.org/alfred.git \
            file://COPYING \
            file://0001-alfred-Fixing-Makefile-for-Yocto-builds.patch \
