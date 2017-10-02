@@ -8,7 +8,7 @@ inherit module
 RDEPENDS_${PN} = " kernel-module-libcrc32c kernel-module-bridge"
 S = "${WORKDIR}/git"
 
-SRCREV = "a43826180ec48f1fadc40739ca44196bdbbd10a2"
+SRCREV = "77c6f671de037e2e26b84ccee136753bfe254c65"
 SRC_URI = "git://git.open-mesh.org/batman-adv.git \
            file://COPYING \
            file://0000_batmav-adv_makefile-KERNELPATH.patch \

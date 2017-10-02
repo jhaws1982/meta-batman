@@ -12,7 +12,7 @@
 PATH=/sbin:/bin:/usr/bin:/usr/sbin
 DAEMON=/usr/sbin/alfred
 PIDFILE=/var/run/alfred.pid
-ALFRED_OPTS="-m -i br0 -p 0.5"
+ALFRED_OPTS="-m -i eth0 -p 0.5 -b none"
 
 # alfred init.d script
 test -x $DAEMON || exit 0

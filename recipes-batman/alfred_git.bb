@@ -5,11 +5,13 @@ PRIORITY = "optional"
 LICENSE = "GPLv3"
 LIC_FILES_CHKSUM = "file://../COPYING;md5=d32239bcb673463ab874e80d47fae504"
 
+inherit pkgconfig
+
 DEPENDS += " libnl"
 RDEPENDS_${PN} += " batctl"
 S = "${WORKDIR}/git"
 
-SRCREV = "c7da798113a2a978cf4d45b4aa572d5a6ce17138"
+SRCREV = "585fa1fa39bbdf37811655bdb64177af531eb58f"
 SRC_URI = "git://git.open-mesh.org/alfred.git \
            file://COPYING \
            file://0001-alfred-Fixing-Makefile-for-Yocto-builds.patch \
