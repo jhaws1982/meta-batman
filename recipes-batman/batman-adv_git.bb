@@ -11,11 +11,11 @@ inherit module
 RDEPENDS_${PN} = " kernel-module-libcrc32c kernel-module-bridge"
 S = "${WORKDIR}/git"
 
-SRCREV = "77c6f671de037e2e26b84ccee136753bfe254c65"
+SRCREV = "7ce27179473a1a09d199d4109fcfa7ff91882009"
 SRC_URI = "git://git.open-mesh.org/batman-adv.git \
            file://COPYING \
 	   file://0001-batman-adv-Allow-to-disable-depmod.patch \
-	   file://0002-batman-adv-Provide-Module.symvers-during-install.patch \
+	   file://0002-batman-adv-Fix-timer_setup-on-4.12.28.patch \
           "
 
 PV = "_git${SRCREV}"
