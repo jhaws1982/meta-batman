@@ -12,21 +12,21 @@ Signed-off-by: Sven Eckelmann <sven@narfation.org>
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/Makefile b/Makefile
-index 365860a30bbf199a04937c066c12900f6e5772c5..a89beb9b2cd2916c751d68c6c4b1d39798a5a2d4 100644
+index d665c0baf2800957c7659004ad629c0cb185fbc3..08ac8f65e8f51405d4972c9b7f15d3e95c6cd626 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -47,6 +47,7 @@ PATCH_FLAGS = --batch --fuzz=0 --forward --strip=1 --unified --version-control=n
- PATCH := patch $(PATCH_FLAGS) -i
+@@ -45,6 +45,7 @@ export KERNELPATH
+ RM ?= rm -f
  CP := cp -fpR
  LN := ln -sf
 +DEPMOD := depmod -a
  
- SOURCE = $(wildcard net/batman-adv/*.[ch]) net/batman-adv/Makefile
- SOURCE_BUILD = $(wildcard $(BUILD_DIR)/net/batman-adv/*.[ch]) $(BUILD_DIR)/net/batman-adv/Makefile
-@@ -96,7 +97,7 @@ clean:
- modules_install: config $(SOURCE_STAMP)
+ REVISION= $(shell	if [ -d "$(PWD)/.git" ]; then \
+ 				echo $$(git --git-dir="$(PWD)/.git" describe --always --dirty --match "v*" |sed 's/^v//' 2> /dev/null || echo "[unknown]"); \
+@@ -90,7 +91,7 @@ clean:
+ 
+ install: config
  	$(MAKE) -C $(KERNELPATH) $(BUILD_FLAGS) modules_install
- 	ln -svf $(shell pwd)/build/Module.symvers .
 -	depmod -a
 +	$(DEPMOD)
  

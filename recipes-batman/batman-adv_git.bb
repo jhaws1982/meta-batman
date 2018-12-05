@@ -3,6 +3,9 @@ DESCRIPTION = "Kernel module providing batman-adv mesh networking capabilities"
 LICENSE = "GPLv3"
 LIC_FILES_CHKSUM = "file://../COPYING;md5=d32239bcb673463ab874e80d47fae504"
 
+EXTRA_OEMAKE += "KERNELPATH=${STAGING_KERNEL_DIR}"
+MODULES_INSTALL_TARGET = "install"
+
 inherit module
 
 RDEPENDS_${PN} = " kernel-module-libcrc32c kernel-module-bridge"
@@ -11,8 +14,8 @@ S = "${WORKDIR}/git"
 SRCREV = "77c6f671de037e2e26b84ccee136753bfe254c65"
 SRC_URI = "git://git.open-mesh.org/batman-adv.git \
            file://COPYING \
-           file://0000_batmav-adv_makefile-KERNELPATH.patch \
 	   file://0001-batman-adv-Allow-to-disable-depmod.patch \
+	   file://0002-batman-adv-Provide-Module.symvers-during-install.patch \
           "
 
 PV = "_git${SRCREV}"
