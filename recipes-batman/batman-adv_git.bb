@@ -12,6 +12,7 @@ SRCREV = "77c6f671de037e2e26b84ccee136753bfe254c65"
 SRC_URI = "git://git.open-mesh.org/batman-adv.git \
            file://COPYING \
            file://0000_batmav-adv_makefile-KERNELPATH.patch \
+	   file://0001-batman-adv-Allow-to-disable-depmod.patch \
           "
 
 PV = "_git${SRCREV}"

@@ -1,0 +1,34 @@
+From: Sven Eckelmann <sven@narfation.org>
+Date: Wed, 5 Dec 2018 13:52:01 +0100
+Subject: [PATCH] batman-adv: Allow to disable depmod
+
+On some build systems, the actual call to depmod is not expected and only
+the installation of the module is expected. Just allow to overwrite this
+call with a different (dummy) executable.
+
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+---
+ Makefile | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index 365860a30bbf199a04937c066c12900f6e5772c5..a89beb9b2cd2916c751d68c6c4b1d39798a5a2d4 100644
+--- a/Makefile
++++ b/Makefile
+@@ -47,6 +47,7 @@ PATCH_FLAGS = --batch --fuzz=0 --forward --strip=1 --unified --version-control=n
+ PATCH := patch $(PATCH_FLAGS) -i
+ CP := cp -fpR
+ LN := ln -sf
++DEPMOD := depmod -a
+ 
+ SOURCE = $(wildcard net/batman-adv/*.[ch]) net/batman-adv/Makefile
+ SOURCE_BUILD = $(wildcard $(BUILD_DIR)/net/batman-adv/*.[ch]) $(BUILD_DIR)/net/batman-adv/Makefile
+@@ -96,7 +97,7 @@ clean:
+ modules_install: config $(SOURCE_STAMP)
+ 	$(MAKE) -C $(KERNELPATH) $(BUILD_FLAGS) modules_install
+ 	ln -svf $(shell pwd)/build/Module.symvers .
+-	depmod -a
++	$(DEPMOD)
+ 
+ config:
+ 	$(PWD)/gen-compat-autoconf.sh $(PWD)/compat-autoconf.h
