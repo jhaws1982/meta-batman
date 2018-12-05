@@ -12,7 +12,7 @@ inherit pkgconfig
 DEPENDS += " libnl"
 S = "${WORKDIR}/git"
 
-SRCREV = "7e0e9389946fa0c2d3fb3dd9e622db1cb8daff6d"
+SRCREV = "fec077f0165b13019d7019d00c1846ead8f45e86"
 SRC_URI = "git://git.open-mesh.org/batctl.git \
            file://COPYING \
           "
