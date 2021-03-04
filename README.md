@@ -56,4 +56,4 @@ other layers needed. e.g.:
 In addition to this, you'll need to make sure you add the packages you 
 are interested in to your local.conf (or other *.conf file), e.g.:
 
-  IMAGE_ISNTALL_append += " batctl"
+  IMAGE_INSTALL_append += " batctl"
