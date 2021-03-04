@@ -53,4 +53,7 @@ other layers needed. e.g.:
     /path/to/yocto/meta-batman \
     "
 
+In addition to this, you'll need to make sure you add the packages you 
+are interested in to your local.conf (or other *.conf file), e.g.:
 
+  IMAGE_ISNTALL_append += " batctl"
