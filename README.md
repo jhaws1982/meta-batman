@@ -9,17 +9,16 @@ Dependencies
 
 This layer depends on:
 
-  URI: git://git.openembedded.org/bitbake
-  branch: master
+    URI: git://git.openembedded.org/bitbake
+    branch: master
 
-  URI: git://git.openembedded.org/openembedded-core
-  layers: meta
-  branch: jethro
+    URI: git://git.openembedded.org/openembedded-core
+    layers: meta
+    branch: jethro
 
-  URI: git://git.yoctoproject.org/poky
-  layers: ----
-  branch: jethro
-
+    URI: git://git.yoctoproject.org/poky
+    layers: ----
+    branch: jethro
 
 Patches
 =======
@@ -29,13 +28,7 @@ Please submit any patches against the batman layer to maintainer:
 Maintainer: Jonathan Haws <jhaws@sdl.usu.edu>
 
 
-Table of Contents
-=================
-
-  I. Adding the batman layer to your build
-
-
-I. Adding the batman layer to your build
+Adding the batman layer to your build
 =================================================
 
 In order to use this layer, you need to make the build system aware of
