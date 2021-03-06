@@ -39,14 +39,14 @@ yocto build tree, you can add it to the build system by adding the
 location of the batman layer to bblayers.conf, along with any
 other layers needed. e.g.:
 
-  BBLAYERS ?= " \
-    /path/to/yocto/meta \
-    /path/to/yocto/meta-yocto \
-    /path/to/yocto/meta-yocto-bsp \
-    /path/to/yocto/meta-batman \
-    "
+    BBLAYERS ?= " \
+      /path/to/yocto/meta \
+      /path/to/yocto/meta-yocto \
+      /path/to/yocto/meta-yocto-bsp \
+      /path/to/yocto/meta-batman \
+      "
 
 In addition to this, you'll need to make sure you add the packages you 
 are interested in to your local.conf (or other *.conf file), e.g.:
 
-  IMAGE_INSTALL_append += " batctl"
+    IMAGE_INSTALL_append += " batctl"
